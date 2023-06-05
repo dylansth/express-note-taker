@@ -10,7 +10,7 @@ const path = require('path');
 
 const dbFilePath = path.join(__dirname, '..', 'db', 'db.json');
 
-notes.get('/', (req, res) => {
+notes.get('/notes', (req, res) => {
   readFromFile(dbFilePath).then((data) => {
     const notesData = JSON.parse(data).map((note) => {
       return { title: note.title, text: note.text };
@@ -19,25 +19,25 @@ notes.get('/', (req, res) => {
   });
 });
 
-notes.get('/:note_id', (req, res) => {
-  const noteId = req.params.note_id;
+notes.get('/notes/:id', (req, res) => {
+  const noteId = req.params.id;
   readFromFile(dbFilePath)
     .then((data) => JSON.parse(data))
     .then((json) => {
-      const result = json.filter((note) => note.note_id === noteId);
+      const result = json.filter((note) => note.id === noteId);
       return result.length > 0
         ? res.json(result)
         : res.json('No notes with that ID');
     });
 });
 
-notes.delete('/:note_id', (req, res) => {
-  const noteId = req.params.note_id;
+notes.delete('/notes/:id', (req, res) => {
+  const noteId = req.params.id;
   readFromFile(dbFilePath)
     .then((data) => JSON.parse(data))
     .then((json) => {
       // Make a new array of all notes except the one with the ID provided in the URL
-      const result = json.filter((note) => note.note_id !== noteId);
+      const result = json.filter((note) => note.id !== noteId);
 
       // Save that array to the filesystem
       writeToFile('./db/notes.json', result);
@@ -47,7 +47,7 @@ notes.delete('/:note_id', (req, res) => {
     });
 });
 
-notes.post('/', (req, res) => {
+notes.post('/notes', (req, res) => {
   console.log(req.body);
 
   const { title, text } = req.body;
