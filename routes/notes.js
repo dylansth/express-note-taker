@@ -40,7 +40,7 @@ notes.delete('/notes/:id', (req, res) => {
       const result = json.filter((note) => note.id !== noteId);
 
       // Save that array to the filesystem
-      writeToFile('./db/notes.json', result);
+      writeToFile('./db/db.json', result);
 
       // Respond to the DELETE request
       res.json(`Item ${noteId} has been deleted 🗑️`);
