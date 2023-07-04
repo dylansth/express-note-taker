@@ -13,7 +13,7 @@ const dbFilePath = path.join(__dirname, '..', 'db', 'db.json');
 notes.get('/notes', (req, res) => {
   readFromFile(dbFilePath).then((data) => {
     const notesData = JSON.parse(data).map((note) => {
-      return { title: note.title, text: note.text };
+      return { id: note.id, title: note.title, text: note.text };
     });
     res.json(notesData);
   });
